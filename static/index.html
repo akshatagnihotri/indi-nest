@@ -1,0 +1,402 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>IndiNest — Precise Indian Housing Cost Predictor</title>
+    <meta name="description" content="A high-precision real estate valuation engine operating on 14,000+ data points across Delhi, Mumbai, and Pune.">
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400;1,600&family=Inter:wght@300;400;500;600;700&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+    <!-- Lucide Icons -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body class="tp-paper-bg">
+    <!-- Custom reticle cursor -->
+    <div id="tp-cursor" aria-hidden="true">
+        <svg viewBox="0 0 32 32" width="32" height="32">
+            <line x1="16" y1="3" x2="16" y2="12"></line>
+            <line x1="16" y1="20" x2="16" y2="29"></line>
+            <line x1="3" y1="16" x2="12" y2="16"></line>
+            <line x1="20" y1="16" x2="29" y2="16"></line>
+            <circle cx="16" cy="16" r="1.6"></circle>
+        </svg>
+        <div class="tp-cursor-ring"></div>
+    </div>
+
+    <!-- Background Grid and Shader Highlights -->
+    <div class="tp-grid-overlay" aria-hidden="true"></div>
+    <div class="glow-orb orb-1"></div>
+    <div class="glow-orb orb-2"></div>
+
+    <div class="app-container">
+        <!-- Navigation bar -->
+        <nav id="tp-nav">
+            <a class="tp-logo" href="#top">
+                <svg viewBox="0 0 60 60" width="30" height="30" class="tp-logo-mark">
+                    <rect x="4" y="36" width="12" height="20" rx="1" class="tp-logo-bar-a"></rect>
+                    <rect x="24" y="20" width="12" height="36" rx="1" class="tp-logo-bar-b"></rect>
+                    <rect x="44" y="4" width="12" height="52" rx="1" class="tp-logo-bar-c"></rect>
+                    <line x1="10" y1="38" x2="50" y2="6" class="tp-logo-line"></line>
+                </svg>
+                <div class="tp-logo-wordmark">
+                    <span class="tp-logo-name">INDI_NEST</span>
+                    <span class="tp-logo-sub">PREDICTOR</span>
+                </div>
+            </a>
+            <div class="tp-nav-session">
+                <span class="tp-led"></span>
+                <span class="tp-nav-session-id">SYSTEM · <span id="tp-session-id">ONLINE</span></span>
+            </div>
+        </nav>
+
+        <!-- Hero Section -->
+        <section class="tp-hero animate-fade-in">
+            <div class="tp-ghost-num">01</div>
+            <div class="tp-hero-meta">
+                <span class="tp-label">INDINEST ENGINE · MODEL HGB_250</span>
+                <span class="tp-label tp-label-mute">Delhi · Mumbai · Pune · Est. 2026</span>
+            </div>
+            <div class="tp-hero-center">
+                <h1 class="tp-hero-title">
+                    <span class="tp-line tp-line-a">We predict</span>
+                    <span class="tp-line tp-line-b" data-brass="true">precise</span>
+                    <span class="tp-line tp-line-c">rents.</span>
+                </h1>
+                <p class="tp-hero-sub">
+                    A machine learning valuation engine built on 13,910 property listings. Structured spatial parameters, unit configurations, and furnishing statuses. No sidelines.
+                </p>
+                <div class="tp-hero-badges">
+                    <span class="tp-chip tp-chip-green"><span class="tp-chip-dot"></span> Train Accuracy: 94.2%</span>
+                    <span class="tp-chip-x">×</span>
+                    <span class="tp-chip tp-chip-cyan"><span class="tp-chip-dot"></span> Validation R²: 92.1%</span>
+                </div>
+            </div>
+            <div class="tp-hero-telemetry">
+                <div>
+                    <span class="tp-label">Dataset</span>
+                    <b>13,910</b>
+                </div>
+                <div>
+                    <span class="tp-label">Cities</span>
+                    <b>03</b>
+                </div>
+                <div>
+                    <span class="tp-label">Algorithm</span>
+                    <b>HistGB_Reg</b>
+                </div>
+                <div>
+                    <span class="tp-label">Status</span>
+                    <b class="tp-blink">Evaluating</b>
+                </div>
+            </div>
+        </section>
+
+        <!-- Main Dashboard -->
+        <main class="main-content">
+            <!-- Form Block -->
+            <section class="tp-card tp-card-form animate-slide-up" data-tilt="true">
+                <div class="tp-card-inner">
+                    <div class="tp-card-meta">
+                        <span class="tp-label tp-label-brass">01 · PROPERTY ATTRIBUTES</span>
+                        <span class="tp-label tp-label-mute">INPUT PARAMETERS</span>
+                    </div>
+                    <h2 class="tp-card-heading">Configure specifications.</h2>
+                    <form id="prediction-form" novalidate>
+                        <div class="form-grid">
+                            <!-- City -->
+                            <div class="form-group" id="group-city">
+                                <label for="city"><span class="tp-label">01 // City</span></label>
+                                <select id="city" name="city" required>
+                                    <option value="" disabled selected>Select City</option>
+                                </select>
+                                <span class="error-msg" id="error-city">Select a city</span>
+                            </div>
+
+                            <!-- Location -->
+                            <div class="form-group" id="group-location">
+                                <label for="location"><span class="tp-label">02 // Locality</span></label>
+                                <select id="location" name="location" required disabled>
+                                    <option value="" disabled selected>Select Locality</option>
+                                </select>
+                                <span class="error-msg" id="error-location">Select a locality</span>
+                            </div>
+
+                            <!-- Property Type -->
+                            <div class="form-group" id="group-property-type">
+                                <label for="property_type"><span class="tp-label">03 // Property Type</span></label>
+                                <select id="property_type" name="property_type" required>
+                                    <option value="Apartment">Apartment</option>
+                                    <option value="Independent Floor">Independent Floor</option>
+                                    <option value="Independent House">Independent House</option>
+                                    <option value="Villa">Villa</option>
+                                    <option value="Penthouse">Penthouse</option>
+                                    <option value="Studio">Studio / 1 RK</option>
+                                    <option value="Other">Other</option>
+                                </select>
+                            </div>
+
+                            <!-- Furnishing -->
+                            <div class="form-group" id="group-status">
+                                <label for="Status"><span class="tp-label">04 // Furnishing</span></label>
+                                <select id="Status" name="Status" required>
+                                    <option value="Unfurnished">Unfurnished</option>
+                                    <option value="Semi-Furnished" selected>Semi-Furnished</option>
+                                    <option value="Furnished">Fully Furnished</option>
+                                </select>
+                            </div>
+
+                            <!-- Size -->
+                            <div class="form-group" id="group-size">
+                                <label for="size_sqft"><span class="tp-label">05 // Built-up Area (Sq.Ft.)</span></label>
+                                <input type="number" id="size_sqft" name="size_sqft" min="100" max="50000" value="1000" required>
+                                <span class="error-msg" id="error-size">Must be 100 - 50,000</span>
+                            </div>
+
+                            <!-- Bedrooms -->
+                            <div class="form-group" id="group-bhk">
+                                <label for="bhk"><span class="tp-label">06 // Bedrooms (BHK)</span></label>
+                                <select id="bhk" name="bhk">
+                                    <option value="1">1 BHK / RK</option>
+                                    <option value="2" selected>2 BHK</option>
+                                    <option value="3">3 BHK</option>
+                                    <option value="4">4 BHK</option>
+                                    <option value="5">5+ BHK</option>
+                                </select>
+                            </div>
+
+                            <!-- Bathrooms -->
+                            <div class="form-group" id="group-bathrooms">
+                                <label for="numBathrooms"><span class="tp-label">07 // Bathrooms</span></label>
+                                <select id="numBathrooms" name="numBathrooms">
+                                    <option value="1">1 Bath</option>
+                                    <option value="2" selected>2 Baths</option>
+                                    <option value="3">3 Baths</option>
+                                    <option value="4">4+ Baths</option>
+                                </select>
+                            </div>
+
+                            <!-- Balconies -->
+                            <div class="form-group" id="group-balconies">
+                                <label for="numBalconies"><span class="tp-label">08 // Balconies</span></label>
+                                <select id="numBalconies" name="numBalconies">
+                                    <option value="0">No Balcony</option>
+                                    <option value="1">1 Balcony</option>
+                                    <option value="2" selected>2 Balconies</option>
+                                    <option value="3">3+ Balconies</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <button type="submit" id="predict-btn" class="tp-pcard-cta">
+                            <span>Execute prediction</span>
+                            <svg viewBox="0 0 20 12" width="20" height="12" aria-hidden="true">
+                                <path d="M14 1L19 6M19 6L14 11M19 6H0"></path>
+                            </svg>
+                        </button>
+                    </form>
+                    <div class="tp-pcard-edge tp-pcard-edge-green"></div>
+                </div>
+            </section>
+
+            <!-- Results Block -->
+            <section class="tp-card tp-card-results animate-slide-up delay-1" id="tp-results-stage">
+                <div class="tp-card-inner">
+                    <!-- Placeholder View -->
+                    <div id="results-placeholder" class="results-state active">
+                        <div class="placeholder-icon">
+                            <i data-lucide="compass"></i>
+                        </div>
+                        <h3>Engine Idle</h3>
+                        <p class="tp-card-body">Awaiting telemetry inputs. Select property configuration parameters and trigger the prediction engine to calculate rent cost valuation.</p>
+                    </div>
+
+                    <!-- Loading View -->
+                    <div id="results-loading" class="results-state">
+                        <div class="spinner-mesh"></div>
+                        <h3>Computing Vectors</h3>
+                        <p class="tp-card-body">Re-indexing categorical encodings, fetching median spatial coordinates, and running splits through the Gradient Boosting ensemble.</p>
+                    </div>
+
+                    <!-- Valuation Display View -->
+                    <div id="results-display" class="results-state">
+                        <div class="tp-card-meta">
+                            <span class="tp-label tp-label-cyan">02 · VALUATION REPORT</span>
+                            <span class="tp-label tp-label-mute">ESTIMATE DELIVERED</span>
+                        </div>
+                        
+                        <div class="valuation-display">
+                            <div class="rent-amount-container">
+                                <span class="currency-symbol">₹</span>
+                                <span id="predicted-rent" class="rent-value">--</span>
+                                <span class="per-month">/ mo</span>
+                            </div>
+                        </div>
+
+                        <div class="tp-pcard-rule"></div>
+
+                        <!-- Details telemetry table -->
+                        <div class="property-summary">
+                            <span class="tp-label tp-label-brass"><i data-lucide="cpu" style="width:12px;height:12px;margin-right:4px;"></i> RESOLVED METADATA</span>
+                            <ul class="tp-pcard-stats">
+                                <li>
+                                    <span class="tp-label">Location</span>
+                                    <b id="summary-location">--</b>
+                                </li>
+                                <li>
+                                    <span class="tp-label">City</span>
+                                    <b id="summary-city">--</b>
+                                </li>
+                                <li>
+                                    <span class="tp-label">Structure</span>
+                                    <b id="summary-config">--</b>
+                                </li>
+                                <li>
+                                    <span class="tp-label">Dimension</span>
+                                    <b id="summary-size">--</b>
+                                </li>
+                                <li>
+                                    <span class="tp-label">Coordinates</span>
+                                    <b id="summary-coords" class="coords-mono">--</b>
+                                </li>
+                                <li>
+                                    <span class="tp-label">Status</span>
+                                    <b id="summary-status">--</b>
+                                </li>
+                            </ul>
+                        </div>
+
+                        <div class="tp-pcard-telemetry">
+                            <span class="tp-led tp-led-cyan"></span>
+                            <span class="tp-label">ESTIMATE GENERATED BY ENS_HGB_REG (R² = 0.9209)</span>
+                        </div>
+                    </div>
+
+                    <!-- Error View -->
+                    <div id="results-error" class="results-state">
+                        <div class="error-icon">
+                            <i data-lucide="alert-triangle"></i>
+                        </div>
+                        <h3>Calculation Error</h3>
+                        <p id="error-text" class="tp-card-body">Failed to establish pipeline calculation.</p>
+                        <button id="retry-btn" class="btn-secondary">Reset Engine</button>
+                    </div>
+
+                    <div class="tp-pcard-edge tp-pcard-edge-cyan"></div>
+                </div>
+            </section>
+        </main>
+
+        <!-- Market Telemetry Data Analysis Section -->
+        <section class="tp-analysis animate-slide-up delay-2" id="market-telemetry">
+            <div class="tp-ghost-num">02</div>
+            <header class="tp-section-header">
+                <span class="tp-label tp-label-brass">02 // MARKET TELEMETRY</span>
+                <h2 class="tp-card-heading" style="margin-top: 0.5rem; margin-bottom: 0.5rem;">Database analytics.</h2>
+                <p class="tp-card-body" style="font-size: 1.1rem; max-width: 700px; margin-bottom: 2.5rem;">
+                    Live statistical aggregations and distributions compiled directly from our database of 13,910 verified listings. Insights on cost variations across spatial clusters.
+                </p>
+            </header>
+
+            <!-- KPI Cards Grid -->
+            <div class="tp-analysis-kpi-grid">
+                <div class="tp-kpi-card" data-tilt="true">
+                    <span class="tp-label">Delhi Average</span>
+                    <div class="tp-kpi-value">₹<span id="kpi-delhi">--</span></div>
+                    <span class="tp-label tp-label-mute">per month</span>
+                </div>
+                <div class="tp-kpi-card" data-tilt="true">
+                    <span class="tp-label">Mumbai Average</span>
+                    <div class="tp-kpi-value">₹<span id="kpi-mumbai">--</span></div>
+                    <span class="tp-label tp-label-mute">per month</span>
+                </div>
+                <div class="tp-kpi-card" data-tilt="true">
+                    <span class="tp-label">Pune Average</span>
+                    <div class="tp-kpi-value">₹<span id="kpi-pune">--</span></div>
+                    <span class="tp-label tp-label-mute">per month</span>
+                </div>
+            </div>
+
+            <!-- Charts and List Panel Grid -->
+            <div class="tp-analysis-grid">
+                <!-- Chart 1: BHK Distribution -->
+                <div class="tp-card tp-analysis-panel" data-tilt="true">
+                    <div class="tp-card-inner">
+                        <span class="tp-label tp-label-brass">BHK DISTRIBUTION</span>
+                        <h3 class="tp-panel-title">Property configuration spread</h3>
+                        <div class="tp-chart-container" id="bhk-chart">
+                            <!-- Populated dynamically by JS -->
+                        </div>
+                        <div class="tp-pcard-edge tp-pcard-edge-green"></div>
+                    </div>
+                </div>
+
+                <!-- Chart 2: Furnishing Impact -->
+                <div class="tp-card tp-analysis-panel" data-tilt="true">
+                    <div class="tp-card-inner">
+                        <span class="tp-label tp-label-cyan">FURNISHING VALUE IMPACT</span>
+                        <h3 class="tp-panel-title">Average monthly cost comparison</h3>
+                        <div class="tp-chart-container" id="furnishing-chart">
+                            <!-- Populated dynamically by JS -->
+                        </div>
+                        <div class="tp-pcard-edge tp-pcard-edge-cyan"></div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Top Localities Card -->
+            <div class="tp-card tp-localities-panel" data-tilt="true">
+                <div class="tp-card-inner">
+                    <div class="tp-card-meta">
+                        <span class="tp-label tp-label-brass">HOTSPOTS</span>
+                        <span class="tp-label tp-label-mute">VALUATION SPIKES</span>
+                    </div>
+                    <h3 class="tp-panel-title">Top 5 most expensive localities</h3>
+                    <p class="tp-card-body" style="font-size: 1rem; margin-bottom: 1.5rem;">Select a city to view the highest-valued residential districts based on median rental listing prices.</p>
+                    
+                    <div class="tp-city-selector-tabs">
+                        <button class="tp-tab-btn active" data-city="Delhi">Delhi</button>
+                        <button class="tp-tab-btn" data-city="Mumbai">Mumbai</button>
+                        <button class="tp-tab-btn" data-city="Pune">Pune</button>
+                    </div>
+
+                    <div class="tp-localities-list" id="localities-list">
+                        <!-- Populated dynamically by JS -->
+                    </div>
+                    <div class="tp-pcard-edge" style="background: var(--tp-brass);"></div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Footer -->
+        <footer class="tp-footer animate-fade-in delay-2">
+            <div class="tp-footer-top">
+                <div class="tp-footer-brand">
+                    <svg viewBox="0 0 60 60" width="28" height="28" class="tp-logo-mark">
+                        <rect x="4" y="36" width="12" height="20" rx="1" class="tp-logo-bar-a"></rect>
+                        <rect x="24" y="20" width="12" height="36" rx="1" class="tp-logo-bar-b"></rect>
+                        <rect x="44" y="4" width="12" height="52" rx="1" class="tp-logo-bar-c"></rect>
+                        <line x1="10" y1="38" x2="50" y2="6" class="tp-logo-line"></line>
+                    </svg>
+                    <div>
+                        <div class="tp-footer-name">INDI_NEST LABS</div>
+                        <div class="tp-footer-tag">Operating at the intersection of machine learning, spatial metadata, and housing cost transparency.</div>
+                    </div>
+                </div>
+            </div>
+            <div class="tp-footer-bot">
+                <span class="tp-label tp-label-mute">© 2026 IndiNest Predictor LLC • Stanley &amp; Mumbai • Open Source</span>
+                <span class="tp-label tp-label-mute">MODEL VERSION 2.5.0 · EXPIRED IN 90 DAYS</span>
+            </div>
+        </footer>
+    </div>
+
+    <!-- Initialize Lucide Icons -->
+    <script>
+        lucide.createIcons();
+    </script>
+    <script src="script.js"></script>
+</body>
+</html>
